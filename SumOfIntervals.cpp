@@ -1,100 +1,40 @@
 #include <vector>
-#include <string>
-#include <algorithm> //sort
+#include <utility> 
 
-struct Card {
-  public:
-  enum Suit {Spades, Hearts, Diamonds, Clubs};
-  
-  private:
-  int value;
-  Suit suit;
-  
-  static std::map<char, int> cardValueMap;
-  static std::map<char, Suit> cardSuitMap;
+int sum_intervals(std::vector<std::pair<int, int>> intervals) {
+  std::vector<std::pair<int, int>> sorted = intervals;
 
-  public:
-  Card (const std::string card) {
-    //value
-    std::string value_str = card.substr(0);
-    char c = value_str[0];
-    value = cardValueMap[c];
-    
-    //Suit
-    value_str = card.substr(1);
-    c = value_str[0];
-    suit = cardSuitMap[c];
-  }
-  
-  int getValue() {
-    return value;
-  }
-  
-  
-};
-
-struct PokerHand {
-  private:
-  std::vector<Card> pokerhand;
-    
-  public:
-  PokerHand (const char* pokerhand_unsorted){
-    std::string hand = pokerhand_unsorted;
-    for (size_t i {0}; i < hand.size(); i += 3){
-      std::string card = hand.substr(i, 2);
-      pokerhand.push_back(Card(card));
+  std::sort(sorted.begin(), sorted.end(), [](std::pair<int, int> a, std::pair<int, int> b) {
+    if (a.first != b.first){
+      return a.first < b.first;
+    } else {
+      return a.second < b.second;
     }
-  }
+  });
   
-  int getFirstcard() {
-    Card card = pokerhand[0];
-    return card.getValue();
-  }
-  
-  std::vector<Card> getVector(){
-    return pokerhand;
-  }
-  
-  std::vector<Card> sortHand(){
-    std::vector<Card> vec = this->getVector();
-    std::sort(vec.begin(), vec.end(), [](Card a, Card b) { return a.getValue() > b.getValue(); });
-    
-    //loop for find rows
-    size_t count {0};
-    int last {0};
-    for (size_t i {0}; i < vec.size(); ++i){
-      int val = vec[i].getValue();
-      if (last == val-1){
-        ++count;
+  std::pair<int, int> temp_int;
+  int count {0};
+  int last_count {0};
+  bool first {true};
+  for (auto i : sorted){
+    if (first) {
+      temp_int = i;
+    }
+
+    if (std::get<0>(i) < temp_int.second){ //mergeable
+      if (std::get<1>(i) > temp_int.second){ //bigger max
+        temp_int.second = std::get<1>(i);
+        last_count = 0;
       }
-      last = val;
+    } else { //not mergeable
+      count += last_count;
+      last_count = 0;
+      temp_int = i;
     }
     
-    return vec;
+    last_count = temp_int.second - temp_int.first;
+    first = false;
   }
-};
-
-std::map<char, int> Card::cardValueMap = {
-  {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6}, {'7', 7}, {'8', 8}, {'9', 9}, 
-  {'T', 10}, {'J', 11}, {'Q', 12}, {'K', 13}, {'A', 14}
-};
-
-std::map<char, Card::Suit> Card::cardSuitMap = {
-  {'S', Card::Suit::Spades}, {'H', Card::Suit::Hearts}, {'D', Card::Suit::Diamonds}, {'C', Card::Suit::Clubs}
-};
-
-
-enum class Result { Win, Loss, Tie };
-
-Result compare (const PokerHand &player, const PokerHand &opponent) {
-  PokerHand p = player;
-  PokerHand o = opponent;
-  std::vector<Card> vec = p.sortHand();
-  Card c = vec[0];
-  std::cout << "card: " << c.getValue() << "\n"; 
-  std::cout << "player: " << p.getFirstcard() << "\n"; 
-  std::cout << "opponent: " << o.getFirstcard() << "\n"; 
   
-  
-  return Result::Loss;
+  return count + last_count;
 }
