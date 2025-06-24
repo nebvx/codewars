@@ -30,7 +30,9 @@ struct Card {
     return value;
   }
   
-  
+  Suit getSuit(){
+    return suit;
+  }
 };
 
 struct PokerHand {
@@ -44,6 +46,7 @@ struct PokerHand {
       std::string card = hand.substr(i, 2);
       pokerhand.push_back(Card(card));
     }
+    std::sort(pokerhand.begin(), pokerhand.end(), [](Card a, Card b) { return a.getValue() < b.getValue(); });
   }
   
   int getFirstcard() {
@@ -56,17 +59,11 @@ struct PokerHand {
   }
   
   
-  std::vector<Card> sortHand(){
-    std::vector<Card> vec = this->getVector();
-    std::sort(vec.begin(), vec.end(), [](Card a, Card b) { return a.getValue() < b.getValue(); });
-    return vec;
-  }
-  
-  size_t straight() {
+  int straight() {
     size_t count {1};
     int last {0};
     int val {0};
-    std::vector<Card> vec = this->sortHand();
+    std::vector<Card> vec = pokerhand;
     
     for (size_t i {0}; i < vec.size(); ++i){
       val = vec[i].getValue();
@@ -74,10 +71,30 @@ struct PokerHand {
         ++count;
       }
       last = val;
-      std::cout << "val: " << val << "\n";
+      //std::cout << "val: " << val << "\n";
     }
     
-    return count;
+    return count == 5 ? val : 0;
+  }
+  
+  bool fullHouse() {
+    std::vector<Card> vec = pokerhand;
+    return true;
+  }
+  
+  bool flush() {
+    std::vector<Card> vec = pokerhand;
+    Card::Suit suit;
+    
+    for (size_t i {0}; i < 4; ){
+      suit = vec[i++].getSuit();
+      if (suit != vec[i].getSuit()) {
+        return false;
+      }
+      //std::cout << "z: " << suit << "\n";
+    }
+    
+    return true;
   }
 };
 
@@ -96,11 +113,11 @@ enum class Result { Win, Loss, Tie };
 Result compare (const PokerHand &player, const PokerHand &opponent) {
   PokerHand p = player;
   PokerHand o = opponent;
+  int a = p.straight();
+  bool s = o.flush();
+  int straight = a;
+  std::cout << "straight: " << p.straight() << "\n"; 
   
-  std::cout << "count: " << p.straight() << "\n"; 
-  std::cout << "player: " << p.getFirstcard() << "\n"; 
-  std::cout << "opponent: " << o.getFirstcard() << "\n"; 
-  
-  
-  return Result::Loss;
+  //straight
+  return p.straight() > o.straight() ? Result::Win : Result::Loss;
 }
