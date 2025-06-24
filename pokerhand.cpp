@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <algorithm> //sort
 
 struct Card {
   public:
@@ -28,7 +29,8 @@ struct Card {
   int getValue() {
     return value;
   }
-
+  
+  
 };
 
 struct PokerHand {
@@ -48,6 +50,35 @@ struct PokerHand {
     Card card = pokerhand[0];
     return card.getValue();
   }
+  
+  std::vector<Card> getVector(){
+    return pokerhand;
+  }
+  
+  
+  std::vector<Card> sortHand(){
+    std::vector<Card> vec = this->getVector();
+    std::sort(vec.begin(), vec.end(), [](Card a, Card b) { return a.getValue() < b.getValue(); });
+    return vec;
+  }
+  
+  size_t straight() {
+    size_t count {1};
+    int last {0};
+    int val {0};
+    std::vector<Card> vec = this->sortHand();
+    
+    for (size_t i {0}; i < vec.size(); ++i){
+      val = vec[i].getValue();
+      if (last == val-1){
+        ++count;
+      }
+      last = val;
+      std::cout << "val: " << val << "\n";
+    }
+    
+    return count;
+  }
 };
 
 std::map<char, int> Card::cardValueMap = {
@@ -65,8 +96,10 @@ enum class Result { Win, Loss, Tie };
 Result compare (const PokerHand &player, const PokerHand &opponent) {
   PokerHand p = player;
   PokerHand o = opponent;
-  std::cout << "player: " << p.getFirstcard(); 
-  std::cout << "opponent: " << o.getFirstcard(); 
+  
+  std::cout << "count: " << p.straight() << "\n"; 
+  std::cout << "player: " << p.getFirstcard() << "\n"; 
+  std::cout << "opponent: " << o.getFirstcard() << "\n"; 
   
   
   return Result::Loss;
