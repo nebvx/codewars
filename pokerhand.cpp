@@ -23,8 +23,12 @@ struct Card {
     value_str = card.substr(1);
     c = value_str[0];
     suit = cardSuitMap[c];
-
   }
+  
+  int getValue() {
+    return value;
+  }
+
 };
 
 struct PokerHand {
@@ -41,7 +45,8 @@ struct PokerHand {
   }
   
   int getFirstcard() {
-    auto card = pokerhand[0];
+    Card card = pokerhand[0];
+    return card.getValue();
   }
 };
 
@@ -50,7 +55,7 @@ std::map<char, int> Card::cardValueMap = {
   {'T', 10}, {'J', 11}, {'Q', 12}, {'K', 13}, {'A', 14}
 };
 
-std::map<char, Card::Suit> cardSuitMap = {
+std::map<char, Card::Suit> Card::cardSuitMap = {
   {'S', Card::Suit::Spades}, {'H', Card::Suit::Hearts}, {'D', Card::Suit::Diamonds}, {'C', Card::Suit::Clubs}
 };
 
@@ -58,7 +63,11 @@ std::map<char, Card::Suit> cardSuitMap = {
 enum class Result { Win, Loss, Tie };
 
 Result compare (const PokerHand &player, const PokerHand &opponent) {
-  std::cout << "player: " << player.getFirstcard(); 
+  PokerHand p = player;
+  PokerHand o = opponent;
+  std::cout << "player: " << p.getFirstcard(); 
+  std::cout << "opponent: " << o.getFirstcard(); 
+  
   
   return Result::Loss;
 }
