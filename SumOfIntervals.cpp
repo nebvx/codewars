@@ -29,7 +29,8 @@ struct Card {
   int getValue() {
     return value;
   }
-
+  
+  
 };
 
 struct PokerHand {
@@ -57,6 +58,18 @@ struct PokerHand {
   std::vector<Card> sortHand(){
     std::vector<Card> vec = this->getVector();
     std::sort(vec.begin(), vec.end(), [](Card a, Card b) { return a.getValue() > b.getValue(); });
+    
+    //loop for find rows
+    size_t count {0};
+    int last {0};
+    for (size_t i {0}; i < vec.size(); ++i){
+      int val = vec[i].getValue();
+      if (last == val-1){
+        ++count;
+      }
+      last = val;
+    }
+    
     return vec;
   }
 };
