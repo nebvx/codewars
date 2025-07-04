@@ -20,19 +20,20 @@ std::vector<int> snail(const std::vector<std::vector<int>> &snail_map) {
       ret.push_back(snail_map[i][right - 1]);
     }
     --right;
-    /*
+    
     //down 
     for (size_t i {right}; i > 0; --i){
-      ret.push_back(snail_map[down][i]);
+      std::cout << "i: " << i << ", right: " << right << "\n";
+      ret.push_back(snail_map[down - 1][i - 1]);
     }
     --down;
- 
+    
+    
     //left
     for (size_t i {0}; i < down - top; ++i){
       ret.push_back(snail_map[down - i][left]);
     }
     ++left;
-    */
   }
   
   return ret;
