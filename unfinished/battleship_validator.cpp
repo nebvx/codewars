@@ -8,11 +8,11 @@ bool validate_battlefield(std::vector< std::vector<int> > field) {
     for (size_t x {0}; x < 10; ++x){
       if (field[y][x] == 1){ //ship found
         size_t ship_size {0};
-        for (size_t i {0}; i < 4; ++i){ //ship size loop
+        for (size_t i {1}; i < 4; ++i){ //ship size loop
           bool down {true}, right {true};
           if (field[y + i][x] && down) { //down 
             right = false;
-            if right { return false; } //overlap
+            if (right) { return false; } //overlap
             ++ship_size;
           } else if (field[y][x + i] && right) { // right
             down = false;
