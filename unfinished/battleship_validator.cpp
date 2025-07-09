@@ -23,7 +23,20 @@ bool validate_battlefield(std::vector< std::vector<int> > field) {
           }
         }
         //ship_size gets saved
-        switch
+        switch (ship_size) {
+          case 1:
+            if (sub > 4) { return false; } //only four allowed
+            ++sub;
+          case 2:
+            if (destroyer > 3) { return false; } //only three allowed
+            ++destroyer;
+          case 3:
+            if (cruiser > 2) { return false; } //only two allowed
+            ++cruiser;
+          case 4:
+            if (battleship > 1) { return false; } //only one allowed
+            ++battleship;
+        } 
       }
       
     }
