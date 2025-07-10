@@ -28,34 +28,24 @@ bool validate_battlefield(std::vector< std::vector<int> > field) {
         std::cout << "y: " << y << ", x: " << x << ", ship size: " << ship_size << "\n";
         for (size_t i {0}; i < ship_size; ++i){ //looking for unallowed overlaps
           std::cout << "overlap - ship size: " << ship_size << "\n";
-          if (vertical) {
-            if (x + i != 0) { //left
-              //above
-              if (y != 0) { //first line
-                if (field[y - 1][x - 1 + i] == 1) { //starts diagnally left 
-                  std::cout << "overlay above\n";
-                  return false;
-                }
-              }
-              //beneath
-              if (y != 9){ //last line
-                if (field[y + 1][x - 1 + i] == 1) { //starts diagnally left 
-                  std::cout << "overlay beneath at y: " << y << ", x: " << x << "\n";
-                  return false;
-                }
+          if (x + i != 0 && vertical) { //left
+            //beneath
+            if (y != 9){ //last line
+              if (field[y + 1][x - 1 + i] == 1) { //starts diagnally down left 
+                std::cout << "overlay beneath at y: " << y << ", x: " << x << "\n";
+                return false;
               }
             }
-          } else { //horizontal
-            if (x != 9) {
-              //left
-              
-              
-              //rigth
+          } else if (y + i != 0 && !vertical) {
+            if(x != 9) {
+              if (field[y - 1 + i][x + 1] == 1) { //starts diagnally up right 
+                std::cout << "overlay beneath at y: " << y << ", x: " << x << "\n";
+                return false;
+              }
             }
-            
           }
-          
         }
+          
         switch (ship_size) {
         case 1: //only four allowed
           if (++sub > 4) { 
@@ -87,7 +77,7 @@ bool validate_battlefield(std::vector< std::vector<int> > field) {
     }
   }
   if (sub != 4 || destroyer != 3 || cruiser != 2 || battleship != 1) {
-    return false;
+    return false; //ships are missing
   }
   return true;
 }
