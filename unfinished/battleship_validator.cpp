@@ -29,7 +29,7 @@ bool validate_battlefield(std::vector< std::vector<int> > field) {
         for (size_t i {0}; i < ship_size; ++i){ //looking for unallowed overlaps
           std::cout << "overlap - ship size: " << ship_size << "\n";
           if (vertical) {
-            if (x != 0) { //left
+            if (x + i != 0) { //left
               //above
               if (y != 0) { //first line
                 if (field[y - 1][x - 1 + i] == 1) { //starts diagnally left 
@@ -46,7 +46,12 @@ bool validate_battlefield(std::vector< std::vector<int> > field) {
               }
             }
           } else { //horizontal
-            
+            if (x != 9) {
+              //left
+              
+              
+              //rigth
+            }
             
           }
           
