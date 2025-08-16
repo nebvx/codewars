@@ -11,7 +11,6 @@ std::vector<std::string> get_pins(std::string observed) {
         int dig = num % 10;
         num /= 10;
       
-        std::cout << dig;
         std::vector<std::string> curr;
         curr.push_back(std::to_string(dig));
         if (dig != 1 && dig != 4 && dig != 7 && dig != 0) curr.push_back(std::to_string(dig - 1));
