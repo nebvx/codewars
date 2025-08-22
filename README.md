@@ -6,6 +6,7 @@ This repository contains my personal solutions to a variety of [Codewars](https:
 
 - Each file is named after the problem it solves, with a brief comment describing the challenge.
 - Solutions are organized by problem difficulty or kata rank when possible.
+- Katas I’m still working on are placed in the `in-progress/` folder. These may be incomplete or contain experimental code.
 
 ## How to Run
 
