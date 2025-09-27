@@ -1,5 +1,6 @@
 #include <vector>
 #include <utility> 
+#include <algorithm>
 
 int sum_intervals(std::vector<std::pair<int, int>> intervals) {
   std::vector<std::pair<int, int>> sorted = intervals;
