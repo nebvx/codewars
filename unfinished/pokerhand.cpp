@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
-#include <algorithm> //sort
+#include <algorithm>
+#include <map>
 
 struct Card {
   public:
@@ -116,7 +117,6 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
   int a = p.straight();
   bool s = o.flush();
   int straight = a;
-  std::cout << "straight: " << p.straight() << "\n"; 
   
   //straight
   return p.straight() > o.straight() ? Result::Win : Result::Loss;

@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <algorithm>
 
 std::vector<std::string> get_pins(std::string observed) {
     std::vector<std::vector<std::string>> possible_digits;
